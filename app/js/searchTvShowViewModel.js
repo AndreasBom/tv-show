@@ -22,25 +22,25 @@
             queryParameter = "t=";
             getBasicInfo();
             getEpisodes();
-        }
+        };
         
         //Public methods
         vm.doSearch = function (){
             queryParameter = "t=";
             getBasicInfo();
             getEpisodes();
-        }
+        };
         
         vm.goToSearch = function (){
             vm.isResultView = false;
             vm.selectedEpisod = "";
-        }
+        };
         
         vm.showEpisode = function (){
             vm.isLoading= true;
             queryParameter = "i=";
             getEpisodeInfo(JSON.parse(vm.selectedEpisod));
-        }
+        };
         
         //Private Methods
         var createQuery = function (){
@@ -50,7 +50,7 @@
             }
             //return all seasons
             return queryParameter + vm.searchTitle;
-        }
+        };
     
         //Get basic information for tv show
         var getBasicInfo = function(){
@@ -62,7 +62,7 @@
                 }, function (error){
                     console.log(error.message);
                 });
-        }
+        };
         
         //Get info about episodes
         var getEpisodes = function(episode){
@@ -75,7 +75,7 @@
                 }, function (error) {
                     console.log(error.message);
                 });
-        }
+        };
         
         var getEpisodeInfo = function (element){
             var query = queryParameter + element.imdbID + "&plot=short";
@@ -88,7 +88,7 @@
                 }, function (error){
                     console.log(error.message);
                 });
-        }
+        };
         
         var populateEpisodeModel = function (data){
             if(data.Response === "True"){
@@ -102,7 +102,7 @@
                 vm.episodeInfo.released = data.Released;
                 vm.episodeInfo.style = data.imdbRating > 8.5 ? "good" : "";
             }
-        }
+        };
 
         
         var populateBasicModel = function (data){
@@ -112,7 +112,7 @@
                 vm.model.tvPlot = data.Plot;
                 vm.model.actors = data.Actors;
             }
-        }
+        };
         
         var populateEpisodesInSeasonModel = function(data){
             if(data.Response === "True"){
@@ -122,7 +122,7 @@
                 vm.model.episodes = data.Episodes;
                 vm.model.meanRating = calculateMeanRating(data.Episodes);
             }
-        }
+        };
         
         var calculateMeanRating = function (episodes){
             var total = 0;
@@ -134,7 +134,7 @@
             
             var mean = Math.round((total/episodes.length) * 100) / 100;
             return mean;
-        }
+        };
         
         vm.defaultSearch();
     });

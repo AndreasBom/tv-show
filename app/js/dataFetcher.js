@@ -6,7 +6,7 @@
         
          dataFactory.get = function (baseUrl, query){
              return $http.get(BASEURL + query)
-         }
+         };
 
         return dataFactory;
     });
