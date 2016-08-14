@@ -1,0 +1,91 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tv-Shows</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/app/css/style.css" type="text/css" />
+</head>
+<body ng-app="app" data-ng-cloak>
+    <div class="container" data-ng-controller="searchTvShowViewModel as tvShow">
+        <!--SearchView-->
+        <div class="form-group search-box" data-ng-hide="tvShow.isResultView">
+            <h1 data-ng-cloak class="">{{tvShow.appTitle}}</h1>
+            <input type="text" class="form-control" id="title" name="title" data-ng-model="tvShow.searchTitle" placeholder="Sök på titel"/>
+            <label for="episode" class="label-text">Episode</label>
+            <input type="text" class="form-control text-input-sm" id="episode" name="episode" data-ng-model="tvShow.searchSeason" data-ng-init="tvShow.searchEpisode=1" value="1"/>
+            <button class="btn btn-primary search-btn" ng-click="tvShow.doSearch()">Sök</button>
+        </div>
+
+        <!--ResultView-->
+        <!--Overview-->
+        <div data-ng-show="tvShow.isResultView" class="row">
+            <div class="col-md-2">
+                <button class="btn btn-link" data-ng-click="tvShow.goToSearch()">Tillbaka till sök</button>
+            </div>
+            <div class="row add-margin-top posts">
+                <div class="col-md-12">
+                    <h2 data-ng-cloak>{{tvShow.model.title}} <span class="meanRating">(Genomsnittligt betyg: {{tvShow.model.meanRating}})</span></h2>
+                    <hr>
+                    <div class="row">
+                        <img  id="poster" class="col-md-6" data-ng-src="{{tvShow.model.poster}}" alt="Poster"></img>
+                        <h3 class="col-md-6">Beskrivning</h3>
+                        <p class="col-md-6">{{tvShow.model.tvPlot}}</p>
+                        <h3 class="col-md-6">Skådespelare</h3>
+                        <p class="col-md-6">{{tvShow.model.actors}}</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <!--Episodes-->
+            <h2>
+                Säsong {{tvShow.model.season}}
+            </h2>
+            
+            <label for="select">Välj avsnitt</label>
+            <select name="select" data-ng-model="tvShow.selectedEpisod" data-ng-change="tvShow.showEpisode()">
+              <option data-ng-repeat="episode in tvShow.model.episodes"  value="{{episode}}">{{episode.Title}}</option>
+            </select>
+            
+            <div class="row posts {{tvShow.episodeInfo.style}}" data-ng-show="tvShow.selectedEpisod !== ''">
+                 <div class="col-md-8">
+                    <div class="loader">
+                        <img data-ng-show="tvShow.isLoading" src="/app/img/ajax-loader.gif" alt="Laddar"></img>
+                    </div>
+                    <div data-ng-hide="tvShow.isLoading">
+                         <div class="row">
+                             <div class="col-md-6">
+                                 <img data-ng-src="{{tvShow.episodeInfo.poster}}" class="episode-img"></img>
+                             </div>
+                             <div class=col-md-6>
+                                <table>
+                                    <tr>
+                                        <td>Episod:</td>
+                                        <td>{{tvShow.episodeInfo.episodeNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Beskrivning:</td>
+                                        <td>{{tvShow.episodeInfo.plot}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Utgiven:</td>
+                                        <td>{{tvShow.episodeInfo.released}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Betyg:</td>
+                                        <td>{{tvShow.episodeInfo.imdbRating}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-resource.js"></script>
+    <script type="text/javascript" src="/app/js/app.js"></script>
+    <script type="text/javascript" src="/app/js/dataFetcher.js"></script>
+    <script type="text/javascript" src="/app/js/searchTvShowViewModel.js"></script>
+</body>
+</html>
